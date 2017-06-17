@@ -166,7 +166,7 @@ def binarization(image):
 if __name__ == "__main__":
     #test_image = Image.open("/home/lan/Desktop/test1.jpg")  # /home/lan/PycharmProjects/cnn-for-captcha/CaptchaGenerator/mycaptchas/5WMn6m.jpg
     #binarization(test_image).save("/home/lan/Desktop/test_bi.jpg")
-    cpt_cnt = 24
+    cpt_cnt = 48
     plt.figure(num='astronaut',figsize=(28,10))
     plt.axis('off')
     for i in range(cpt_cnt):
