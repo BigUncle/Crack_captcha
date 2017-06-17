@@ -170,7 +170,14 @@ if __name__ == "__main__":
     plt.figure(num='astronaut',figsize=(28,10))
     plt.axis('off')
     for i in range(cpt_cnt):
-        x, y =create_validate_code(size=(146, 65), font_size=40, bg_color=tuple(np.random.randint(180, 255, size=3)), fg_color=tuple(np.random.randint(40, 179, size=3)),font_type='c:\\windows\\fonts\\ARIALN.ttf', char_length=4, draw_points=True, point_chance=4, draw_lines=True, n_line=(8, 12), min_length=15, max_length=30)
+        x, y =create_validate_code(size=(146, 65),
+                                   font_size=40,
+                                   bg_color=tuple(np.random.randint(180, 255, size=3)),
+                                   fg_color=tuple(np.random.randint(40, 179, size=3)),
+                                   font_type='c:\\windows\\fonts\\ARIALN.ttf',
+                                   char_length=4, draw_points=True,
+                                   point_chance=4, draw_lines=True,
+                                   n_line=(8, 12), min_length=15, max_length=30)
         plt.subplot(6, cpt_cnt//6, i+1)
         plt.imshow(x)
     plt.show()
