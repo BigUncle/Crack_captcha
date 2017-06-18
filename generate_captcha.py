@@ -6,17 +6,21 @@ import shutil
 import glob
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+import matplotlib.pyplot as plt
 
 # abcdefghjkmnpqrstuvwxy
-_letter_cases = "abdefghmnpqrstwxyz"  # 小写字母，去除可能干扰的c i j k l o u v
-_upper_cases = "ABDEFHMNPQRSTWXYZ"  # 大写字母，去除可能干扰的C G I J K L O U V
-_numbers = ''.join(map(str, range(2, 10)))  # 数字，去除0，1
+# _letter_cases = "abdefghmnpqrstwxyz"  # 小写字母，去除可能干扰的c i j k l o u v
+_letter_cases = "abcdefghijklmnopqrstuvwxyz"  # 小写字母，去除可能干扰的c i j k l o u v
+# _upper_cases = "ABDEFHMNPQRSTWXYZ"  # 大写字母，去除可能干扰的C G I J K L O U V
+_upper_cases = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"  # 大写字母，去除可能干扰的C G I J K L O U V
+# _numbers = ''.join(map(str, range(2, 10)))  # 数字，去除0，1
+_numbers = ''.join(map(str, range(0, 10)))  # 数字，去除0，1
 init_chars = ''.join((_letter_cases, _upper_cases, _numbers))
 current_dir = os.path.dirname(__file__)
 fontType = os.path.join(current_dir, "luxirb.ttf")
 bg_image = os.path.join(current_dir, "background.jpg")
 out_dir = os.path.join(current_dir, "mycaptchas")
-import matplotlib.pyplot as plt
+
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -81,8 +85,9 @@ def create_validate_code(size=(140, 65),
                float(random.randint(1, 2)) / 500
                ]
     img = img.transform(size, Image.PERSPECTIVE, params) # 创建扭曲
+    img = np.array(img)
     #img = img.filter(ImageFilter.DETAIL)  # 滤镜，边界加强（阈值更大）
-    return img, strs
+    return strs, img
 
 
 def create_lines(draw, min_length, max_length, n_line, width, height):
@@ -163,21 +168,27 @@ def binarization(image):
     return binarized_img
 
 
+def sample_captcha(size=(144, 68)):
+    captcha_text, captcha_img =create_validate_code(size=size,
+                                                   font_size=40,
+                                                   bg_color=tuple(np.random.randint(180, 255, size=3)),
+                                                   fg_color=tuple(np.random.randint(40, 179, size=3)),
+                                                   font_type='c:\\windows\\fonts\\ARIALN.ttf',
+                                                   char_length=4, draw_points=True,
+                                                   point_chance=4, draw_lines=True,
+                                                   n_line=(8, 12), min_length=15, max_length=30)
+    return captcha_text, captcha_img
+
 if __name__ == "__main__":
     #test_image = Image.open("/home/lan/Desktop/test1.jpg")  # /home/lan/PycharmProjects/cnn-for-captcha/CaptchaGenerator/mycaptchas/5WMn6m.jpg
     #binarization(test_image).save("/home/lan/Desktop/test_bi.jpg")
-    cpt_cnt = 48
-    plt.figure(num='astronaut',figsize=(28,10))
+    plt_rows = 6
+    plt_cols = 8
+    cpt_cnt = plt_rows * plt_cols
+    plt.figure(num='astronaut',figsize=(plt_cols*4, plt_rows * 2))
     plt.axis('off')
     for i in range(cpt_cnt):
-        x, y =create_validate_code(size=(146, 65),
-                                   font_size=40,
-                                   bg_color=tuple(np.random.randint(180, 255, size=3)),
-                                   fg_color=tuple(np.random.randint(40, 179, size=3)),
-                                   font_type='c:\\windows\\fonts\\ARIALN.ttf',
-                                   char_length=4, draw_points=True,
-                                   point_chance=4, draw_lines=True,
-                                   n_line=(8, 12), min_length=15, max_length=30)
-        plt.subplot(6, cpt_cnt//6, i+1)
-        plt.imshow(x)
+        captcha_text, captcha_img = sample_captcha()
+        plt.subplot(plt_rows, plt_cols, i+1)
+        plt.imshow(captcha_img)
     plt.show()
