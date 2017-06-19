@@ -22,22 +22,20 @@ import time
 
 #tf.reset_default_graph()
 
-text, image = sample_captcha()
+
+# 图像大小
+IMAGE_HEIGHT = 64
+IMAGE_WIDTH = 136
+
+text, image = sample_captcha(size=(IMAGE_HEIGHT, IMAGE_WIDTH))
+MAX_CAPTCHA = len(text)
 #plt.imshow(image)
 #plt.show()
 #image = np.pad(image, ((0, 1), (0, 0), (0, 0)), 'edge')
 #plt.imshow(image)
 #plt.show()
 
-
-
-
 print("验证码图像channel:", image.shape)  # (60, 160, 3)
-# 图像大小
-IMAGE_HEIGHT = 64
-IMAGE_WIDTH = 136
-MAX_CAPTCHA = len(text)
-
 print("验证码文本最长字符数", MAX_CAPTCHA)   # 验证码最长4字符; 我全部固定为4,可以不固定. 如果验证码长度小于4，用'_'补齐
 
 # 把彩色图像转为灰度图像（色彩对识别验证码没有什么用）
@@ -223,11 +221,12 @@ def train_crack_captcha_cnn():
                     saver.save(sess, "/tmp/tf_crack_cjt_captcha_model/crack_captcha_%s.model" % acc , global_step=step)
                     tmp_acc += 0.1
                     #break
-                if acc >= 0.9:
+                if acc >= 0.98:
                     saver.save(sess, "/tmp/tf_crack_cjt_captcha_model/crack_captcha.model" , global_step=step)
                     break
 
 
             step += 1
 
-train_crack_captcha_cnn()
+if __name__ == "__main__":
+    train_crack_captcha_cnn()
