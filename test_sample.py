@@ -23,7 +23,7 @@ def crack_captcha1(captcha_image):
     #from tensorflow.python.framework import ops
     # ops.reset_default_graph()
     output = crack_captcha_cnn()
-    checkpoint_dir = "D:/tmp/tf_crack_cjt_captcha_model/crack_captcha_0.84.model-3600"
+    checkpoint_dir = "D:/tmp/tf_crack_cjt_captcha_model/crack_captcha_0.9725.model-9300"
     # tf.reset_default_graph()
     saver = tf.train.Saver()
     #g = tf.Graph()
@@ -86,7 +86,8 @@ def cjt_img_random_test(cjt_img_dirs=r'D:\\Program Files\\Tesseract-OCR\\cjtdata
 
 
 if __name__ == '__main__':
-    pass
+    #pass
+    gen_captcha_test()
 
 #==============================================================================
 # _time = time.time()
